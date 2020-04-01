@@ -23,6 +23,7 @@ app.get('/get',function(req,res){
 	status_code.time = time;
 	var obj = JSON.parse(status_code);//static becomes dynamic
 	obj.time = time;
+	obj.ip = myip;
 	
 	var status_query = status_code;
 
