@@ -6,7 +6,7 @@ const port =3000;
 function getClientIP(req){
 	return (req.headers['x-forwarded-for']||'').split(',')[0]||req.connection.remoteAddress;
 }
-
+   
 
 app.get('/get',function(req,res){
 //	var user_id = req.param('xx');
