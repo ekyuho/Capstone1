@@ -84,7 +84,7 @@ void loop() {
 	}
 	while (dust.available()) {
 		char a = dust.read();
-		Serial.printf(" %02X", dust.read());
 		if (a == 0x42) Serial.println();
-	}
+		Serial.printf(" %02X", dust.read());
+	}	
 }
