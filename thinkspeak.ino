@@ -5,6 +5,8 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 DeviceAddress insideThermometer;
 
+HardwareSerial dfSerial(2);  //(통신속도, UART모드, RX핀번호 16, TX핀번호 17)
+
 #include <WiFi.h>
 const char* ssid     = "Hallym WiFi";
 const char* password = "1111133333";
@@ -20,14 +22,11 @@ void send(float temp) {
         return;
     }
 
-    // We now create a URI for the request
-    url += String(temp);
-
     Serial.print("\nRequesting URL: ");
-    Serial.println(url);
+    Serial.println(url+String(temp));
 
     // This will send the request to the server
-    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+    client.print(String("GET ") + url+String(temp) + " HTTP/1.1\r\n" +
                  "Host: " + host + "\r\n" +
                  "Connection: close\r\n\r\n");
     unsigned long timeout = millis();
