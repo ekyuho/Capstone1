@@ -5,7 +5,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 DeviceAddress insideThermometer;
 
-HardwareSerial dfSerial(2);  //(통신속도, UART모드, RX핀번호 16, TX핀번호 17)
+HardwareSerial dust(2);  //(통신속도, UART모드, RX핀번호 16, TX핀번호 17)
 
 #include <WiFi.h>
 const char* ssid     = "Hallym WiFi";
@@ -54,6 +54,7 @@ void ticker() {
 
 void setup() {
 	Serial.begin(115200);
+	dust.begin(9600);
 	sensors.begin();
 	Serial.print("Found ");
 	Serial.print(sensors.getDeviceCount(), DEC);
@@ -80,5 +81,10 @@ void loop() {
     if (millis() > mark) {
         mark = millis() + 20000;
 		ticker();
+	}
+	while (dust.available()) {
+		char a = dust.read();
+		Serial.printf(" %02X", dust.read());
+		if (a == 0x42) Serial.println();
 	}
 }
