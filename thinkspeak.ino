@@ -1,6 +1,3 @@
-#include <Ticker.h>
-Ticker tick;
-
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 23
@@ -13,6 +10,7 @@ const char* ssid     = "Hallym WiFi";
 const char* password = "1111133333";
 const char* host = "api.thingspeak.com";
 String url = "/update?api_key=XMFKVF94NW54PH45&field1=";
+static unsigned long mark;
 
 void send(float temp) {
     WiFiClient client;
@@ -57,7 +55,6 @@ void ticker() {
 
 void setup() {
 	Serial.begin(115200);
-	tick.attach(20, ticker);
 	sensors.begin();
 	Serial.print("Found ");
 	Serial.print(sensors.getDeviceCount(), DEC);
@@ -76,8 +73,13 @@ void setup() {
     Serial.println("");
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());  
+    Serial.println(WiFi.localIP());
+    mark = millis() + 2000;
 }
 
 void loop() {
+    if (millis() > mark) {
+        mark = millis() + 20000;
+		ticker();
+	}
 }
